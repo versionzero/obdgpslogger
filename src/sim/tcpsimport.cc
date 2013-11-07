@@ -71,6 +71,37 @@ char* TCPSimPort::getPort() {
 	return portname;
 }
 
+/*
+ * Find the first occurrence of find in s, where the search is limited to the
+ * first slen characters of s.
+ *
+ * Source: http://www.opensource.apple.com/source/Libc/Libc-339/string/FreeBSD/strnstr.c
+ *
+ * We need this as there are some systems that do not provide the
+ * non-standard strnstr() function call. *sigh*
+ */
+#ifndef strnstr
+char *strnstr(const char *s, const char *find, size_t slen)
+{
+  char c, sc;
+  size_t len;
+
+  if ((c = *find++) != '\0') {
+    len = strlen(find);
+    do {
+      do {
+	if ((sc = *s++) == '\0' || slen-- < 1)
+	  return (NULL);
+      } while (sc != c);
+      if (len > slen)
+	return (NULL);
+    } while (strncmp(s, find, len) != 0);
+    s--;
+  }
+  return ((char *)s);
+}
+#endif 
+
 char* TCPSimPort::readLine() {
 	fd_set read_fds;
 	fd_set err_fds;

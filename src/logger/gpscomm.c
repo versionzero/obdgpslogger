@@ -64,7 +64,7 @@ int getgpsposition(struct gps_data_t *g, double *lat, double *lon, double *alt, 
 		count = select(g->gps_fd + 1, &fds, NULL, NULL, &timeout);
 		if(count > 0) {
 #ifdef HAVE_GPSD_V3
-			gps_poll(g);
+			gps_read(g);
 #else
 			gps_query(g, "o");
 #endif //HAVE_GPSD_V3

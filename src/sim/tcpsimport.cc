@@ -22,6 +22,7 @@ along with obdgpslogger.  If not, see <http://www.gnu.org/licenses/>.
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <string.h>
 	  
 #include "simport.h"

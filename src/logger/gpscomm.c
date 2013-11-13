@@ -25,24 +25,18 @@ along with obdgpslogger.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <gps.h>
 
-/* TODO: Improve the the factoring: i.e. make opengps() take three
-   parameters, and return an integer, so that it matches the new
-   gps_open() signature.
- */
-struct gps_data_t g;
-
-struct gps_data_t *opengps(char *server, char *port) {
-        int ret = gps_open(server,port,&g);
-	if(ret != 0)
+struct gps_data_t *opengps(char *server, char *port, struct gps_data_t *gpsdata) {
+        int ret = gps_open(server, port, gpsdata);
+        if(ret != 0)
 		return NULL;
 
 #ifdef HAVE_GPSD_V3
-	gps_stream(&g, WATCH_ENABLE|WATCH_NEWSTYLE, NULL);
+	gps_stream(gpsdata, WATCH_ENABLE|WATCH_NEWSTYLE, NULL);
 #else
-	gps_query(&g, "o");
+	gps_query(gpsdata, "o");
 #endif //HAVE_GPSD_V3
 
-	return &g;
+	return gpsdata;
 }
 
 void closegps(struct gps_data_t *g) {

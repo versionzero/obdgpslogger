@@ -308,15 +308,14 @@ int main(int argc, char** argv) {
 
 #ifdef HAVE_GPSD
 	// Open the gps device
-	struct gps_data_t *gpsdata;
-	gpsdata = opengps(GPSD_ADDR, GPSD_PORT);
-
+	struct gps_data_t g, *gpsdata = &g;
+	gpsdata = opengps(GPSD_ADDR, GPSD_PORT, gpsdata);
+	
 	if(NULL == gpsdata) {
 		fprintf(stderr, "Couldn't open gps port on startup.\n");
 	} else {
 		fprintf(stderr, "Successfully connected to gpsd. Will log gps data\n");
 	}
-
 #endif //HAVE_GPSD
 
 	if(-1 == obd_serial_port
@@ -561,7 +560,7 @@ int main(int argc, char** argv) {
 			gpsstatus = getgpsposition(gpsdata, &lat, &lon, &alt, &speed, &course, &gpstime);
 		} else {
 			if(time_insert - time_lastgpscheck > 10) { // Try again once in a while
-				gpsdata = opengps(GPSD_ADDR, GPSD_PORT);
+				gpsdata = opengps(GPSD_ADDR, GPSD_PORT, gpsdata);
 				if(NULL != gpsdata) {
 					printf("Delayed connection to gps achieved\n");
 				} else {

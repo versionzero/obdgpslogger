@@ -32,7 +32,7 @@ along with obdgpslogger.  If not, see <http://www.gnu.org/licenses/>.
  \param port port gpsd is listening on
  \return a gps_data_t, or NULL on failure
  */
-struct gps_data_t *opengps(char *server, char *port);
+struct gps_data_t *opengps(char *server, char *port, struct gps_data_t *gpsdata);
 
 /// Close the gps
 void closegps(struct gps_data_t *g);

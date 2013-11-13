@@ -66,7 +66,7 @@ int main(int argc, char **argv) {
 	int compress_output = 0;
 
 	/// gzip handle
-	gzFile *gz_outfile;
+	gzFile gz_outfile;
 #endif //HAVE_ZLIB
 
 	while ((optc = getopt_long (argc, argv, csvshortopts, csvlongopts, NULL)) != -1) {
